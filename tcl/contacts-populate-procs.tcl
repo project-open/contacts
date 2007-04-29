@@ -37,10 +37,14 @@ ad_proc -public contacts::populate::crm {
 
     set registered_user_group_id [contacts::default_group -package_id $package_id]
 
-    set customers_id [group::new \
-			  -group_name "Customers" "group"]
+    set customers_id [group::get_id -group_name "Customers"]
+    if {$customers_id eq ""} { 
+	set customers_id [group::new \
+			      -group_name "Customers" "group"]
+    }
     lang::message::register -update_sync de_DE acs-translations "group_title_${customers_id}" "Kunden"
 
+    set leads_id [group::get_id -group_name "Leads"]
     set leads_id [group::new \
 			  -group_name "Leads" "group"]
     lang::message::register -update_sync de_DE acs-translations "group_title_${leads_id}" "Leads"

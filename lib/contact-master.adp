@@ -24,6 +24,7 @@
   <property name="party_id">@party_id@</property>
   <if @title@ not nil><property name="title">@title;noquote@</property></if>
   <if @context@ not nil><property name="context">@context;noquote@</property></if>
+
 </else>
 
 <slave>

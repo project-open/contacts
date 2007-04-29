@@ -143,7 +143,7 @@ ad_proc -private contacts::sweeper {
 		set contact_revision_id [contact::revision::new -party_id $person_id -package_id $contact_package($group_id)]
 		break
 	    }
-	}
+	}   
 	
 	if {![exists_and_not_null contact_revision_id]} {
 	    # We did not found a group, so just use the first contacts instance.
@@ -173,12 +173,14 @@ ad_proc -private contacts::sweeper {
 	foreach group_id $default_groups {
 	    if {[group::party_member_p -party_id $organization_id -group_id $group_id]} {
 		ns_log notice "contacts::sweeper creating content_item and content_revision for party_id: $organization_id"
-		contact::revision::new -party_id $organization_id -package_id $contact_package($group_id) -creation_user 0
+		set orga_revision_id [contact::revision::new -party_id $organization_id -package_id $contact_package($group_id) -creation_user 0]
 		break
 	    }
+	} 
+	if {![exists_and_not_null orga_revision_id]} { 
+	    ns_log notice "contacts::sweeper creating content_item and content_revision for organization_id: $organization_id"
+	    contact::revision::new -party_id $organization_id -package_id $contact_package_id
 	}
-	ns_log notice "contacts::sweeper creating content_item and content_revision for organization_id: $organization_id"
-	contact::revision::new -party_id $organization_id -package_id $contact_package_id
     }
 
     if { ![info exists person_id] && ![info exists organization_id] } {
