@@ -162,7 +162,6 @@
       from groups left join ( select * from contact_groups where package_id = :package_id ) as contact_groups on ( groups.group_id = contact_groups.group_id ), acs_objects
      where groups.group_id not in ('-1','[contacts::default_group -package_id $package_id]')
 	and groups.group_id = acs_objects.object_id
-       and groups.group_id not in ( select gcm.component_id from group_component_map gcm where gcm.group_id != -1 )
        and groups.group_id not in ( select group_id from application_groups )
        $filter_clause
      order by mapped_p desc, CASE WHEN contact_groups.default_p THEN '000000000' ELSE upper(groups.group_name) END
